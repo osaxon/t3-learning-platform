@@ -1,17 +1,27 @@
 import { CreatePost } from "~/app/_components/create-post";
+import { DemoAccordian } from "~/components/DemoAccordian";
+import { LessonContent } from "~/components/LessonContent";
+import { LessonDetailsCard } from "~/components/LessonDetailsCard";
+import { Sidebar } from "~/components/Sidebar";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { api } from "~/trpc/server";
 
 export default async function Home() {
-  const posts = await api.post.getLatest();
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <CrudShowcase />
-
-        <pre>
-          <code>{JSON.stringify(posts, null, 2)}</code>
-        </pre>
+    <main className="mx-auto min-h-screen space-y-6 py-10">
+      <div className="border-t">
+        <div className="bg-background">
+          <div className="grid lg:grid-cols-5">
+            <Sidebar />
+            <div className="col-span-3 space-y-8 p-6 lg:col-span-4 lg:border-l">
+              <LessonDetailsCard />
+              <div className="relative flex justify-between gap-4">
+                <LessonContent />
+                <LessonSidebar />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   );
@@ -29,6 +39,27 @@ async function CrudShowcase() {
       )}
 
       <CreatePost />
+    </div>
+  );
+}
+
+function LessonSidebar() {
+  return (
+    <div className="sticky top-5 h-80 w-full space-y-10">
+      <DemoAccordian />
+      <Card className="bg-secondary/10 h-full border-none shadow-none">
+        <CardHeader>
+          <CardTitle>Contents</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="text-primary-foreground space-y-2">
+            <li>Introduction</li>
+            <li>Getting Started</li>
+            <li>Advanced Topics</li>
+            <li>Conclusion</li>
+          </ul>
+        </CardContent>
+      </Card>
     </div>
   );
 }
